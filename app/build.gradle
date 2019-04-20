@@ -38,14 +38,14 @@ android {
 
 dependencies {
     implementation deps.file_tree
-    implementation deps.jetpack.appcompat
-    implementation deps.jetpack.design
-    implementation deps.jetpack.recyclerview
-    implementation deps.jetpack.constraint_layout
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.material
+    implementation deps.androidx.recyclerview
+    implementation deps.androidx.constraint_layout
     implementation deps.kotlin.stdlib_jdk7
-    implementation deps.jetpack.lifecycle
-    implementation deps.jetpack.room_runtime
-    kapt deps.jetpack.room_compiler
+    implementation deps.androidx.lifecycle
+    implementation deps.androidx.room_runtime
+    kapt deps.androidx.room_compiler
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
     implementation deps.okhttp.core
