@@ -14,6 +14,7 @@ androidExtensions {
 
 android {
     compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
     defaultConfig {
         applicationId "com.application.flickr"
         minSdkVersion build_versions.min_sdk
@@ -30,10 +31,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
-    buildToolsVersion build_versions.build_tools
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
 
 dependencies {
@@ -43,17 +46,11 @@ dependencies {
     implementation deps.androidx.recyclerview
     implementation deps.androidx.constraint_layout
     implementation deps.kotlin.stdlib_jdk7
-    implementation deps.androidx.lifecycle
-    implementation deps.androidx.room_runtime
-    kapt deps.androidx.room_compiler
-    implementation deps.retrofit.runtime
-    implementation deps.retrofit.gson
-    implementation deps.okhttp.core
-    implementation deps.okhttp.okhttp_logging_interceptor
     implementation deps.kodein.runtime
     implementation deps.kodein.android
     implementation deps.timber
     implementation deps.glide
     kapt deps.glide_compiler
+    implementation (project(':data'))
 }
 

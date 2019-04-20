@@ -1,4 +1,4 @@
-package com.application.flickr.config
+package com.application.flickr.data.util
 
 import android.os.Handler
 import android.os.Looper

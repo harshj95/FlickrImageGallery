@@ -1,4 +1,4 @@
-package com.application.flickr.api.model
+package com.application.flickr.data.api.model
 
 import androidx.collection.ArrayMap
 import retrofit2.Response

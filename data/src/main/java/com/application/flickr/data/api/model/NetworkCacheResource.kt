@@ -1,4 +1,4 @@
-package com.application.flickr.api.model
+package com.application.flickr.data.api.model
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread

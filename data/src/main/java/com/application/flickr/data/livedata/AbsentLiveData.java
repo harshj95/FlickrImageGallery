@@ -1,6 +1,6 @@
 package com.application.flickr.data.livedata;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 
 /**
  * Created by Harsh Jain on 18/03/19.

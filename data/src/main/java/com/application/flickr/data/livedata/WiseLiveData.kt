@@ -1,6 +1,6 @@
 package com.application.flickr.data.livedata
 
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.MediatorLiveData
 
 /**
  * Created by Harsh Jain on 18/03/19.

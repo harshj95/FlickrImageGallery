@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply from: '../lib-config.gradle'
+
+dependencies {
+    implementation deps.file_tree
+
+    implementation deps.kotlin.stdlib_jdk7
+    implementation deps.androidx.lifecycle
+    implementation deps.androidx.room_runtime
+    kapt deps.androidx.room_compiler
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.okhttp.core
+    implementation deps.okhttp.okhttp_logging_interceptor
+}

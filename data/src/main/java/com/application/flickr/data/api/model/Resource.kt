@@ -1,6 +1,6 @@
-package com.application.flickr.api.model
+package com.application.flickr.data.api.model
 
-import com.application.flickr.api.model.Status.*
+import com.application.flickr.data.api.model.Status.*
 
 /**
  * Created by Harsh Jain on 18/04/19.

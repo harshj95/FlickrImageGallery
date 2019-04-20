@@ -1,7 +1,7 @@
-package com.application.flickr.api
+package com.application.flickr.data.api
 
 import androidx.lifecycle.LiveData
-import com.application.flickr.api.model.ApiResponse
+import com.application.flickr.data.api.model.ApiResponse
 import com.application.flickr.data.model.FlickrApiResponse
 import retrofit2.http.POST
 import retrofit2.http.Query

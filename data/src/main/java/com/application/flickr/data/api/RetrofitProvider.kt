@@ -1,7 +1,7 @@
-package com.application.flickr.api
+package com.application.flickr.data.api
 
 import android.app.Application
-import com.application.flickr.api.util.LiveDataCallAdapterFactory
+import com.application.flickr.data.api.util.LiveDataCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,8 +1,8 @@
-package com.application.flickr.api.util;
+package com.application.flickr.data.api.util;
 
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
-import com.application.flickr.api.model.ApiResponse;
+import com.application.flickr.data.api.model.ApiResponse;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
