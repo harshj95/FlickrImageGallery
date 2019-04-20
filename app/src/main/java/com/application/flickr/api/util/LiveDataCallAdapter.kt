@@ -1,6 +1,6 @@
 package com.application.flickr.api.util
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.application.flickr.api.model.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter

@@ -1,6 +1,6 @@
 package com.application.flickr.api.model
 
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException

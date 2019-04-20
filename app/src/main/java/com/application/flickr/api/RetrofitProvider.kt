@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitProvider {
 
-    private const val BASE_URL = "https://api.flickr.com/services/"
+    const val BASE_URL = "https://api.flickr.com/services/"
 
     fun provideDefaultRetrofit(context: Application, showNetworkLogs: Boolean): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
