@@ -48,9 +48,9 @@ dependencies {
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.kodein.runtime
     implementation deps.kodein.android
-    implementation deps.timber
     implementation deps.glide
     kapt deps.glide_compiler
-    implementation (project(':data'))
+    api (project(':data'))
+    implementation deps.timber
 }
 

@@ -5,10 +5,9 @@ import com.application.flickr.data.api.NetworkApi
 import com.application.flickr.data.api.model.ApiResponse
 import com.application.flickr.data.api.model.NetworkCacheResource
 import com.application.flickr.data.api.model.Resource
+import com.application.flickr.data.db.cache.LruCache
 import com.application.flickr.data.db.dao.ImageDao
-import com.application.flickr.data.livedata.AbsentLiveData
 import com.application.flickr.data.model.FlickrApiResponse
-import com.application.flickr.data.model.Image
 import com.application.flickr.data.util.AppExecutors
 import com.application.flickr.data.util.C
 
@@ -19,24 +18,32 @@ import com.application.flickr.data.util.C
 class ImageRepository(
     private val appExecutors: AppExecutors,
     private val networkApi: NetworkApi,
-    private val imageDao: ImageDao
+    private val imageDao: ImageDao,
+    private val lruCache: LruCache
 ) : Repository() {
 
-    fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<Image>>> {
-        return object : NetworkCacheResource<List<Image>, FlickrApiResponse>(appExecutors) {
-            override fun parseDataIfRequired(requestType: FlickrApiResponse): List<Image> {
-                return requestType.data?.images!!
+    fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<String>>> {
+        return object : NetworkCacheResource<List<String>, FlickrApiResponse>(appExecutors) {
+            override fun parseDataIfRequired(requestType: FlickrApiResponse): List<String> {
+                return requestType.data?.images!!.mapNotNull {
+                    it.url
+                }
             }
 
             override fun cacheCallResult(apiRequestResponse: FlickrApiResponse) {
-//                imageDao.insertUrl(UrlEntity(1, "qw"))
+                apiRequestResponse.data!!.images!!.let { images ->
+                    val urls = images.mapNotNull {
+                        it.url
+                    }
+                    lruCache.put(searchTerm, urls)
+                }
             }
 
-            override fun shouldFetch(data: List<Image>?): Boolean = true
+            override fun shouldFetch(data: List<String>?): Boolean = true
 //                rue for this call because we have pagination. Otherwise a limiter should be used (data or rate)
 
-            override fun loadFromDb(): LiveData<List<Image>> {
-                return AbsentLiveData.create<Resource<List<Image>>>() as LiveData<List<Image>>
+            override fun loadFromDb(): LiveData<List<String>> {
+                return imageDao.getUrlsBySearchTermLiveData(searchTerm)
             }
 
             override fun createCall(): LiveData<ApiResponse<FlickrApiResponse>> {

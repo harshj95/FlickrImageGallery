@@ -1,5 +1,6 @@
 package com.application.flickr.data.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,11 +17,17 @@ abstract class ImageDao {
     abstract fun insertSearchEntity(searchEntity: SearchEntity)
 
     @Query("select * from searchentity where searchTerm = :searchTerm")
-    abstract fun getSearchEntityBySearchTerm(searchTerm: String)
+    abstract fun getSearchEntityBySearchTerm(searchTerm: String): SearchEntity
 
     @Query("select urls from searchentity where searchTerm = :searchTerm")
-    abstract fun getUrlsBySearchTerm(searchTerm: String)
+    abstract fun getUrlsBySearchTerm(searchTerm: String): List<String>
+
+    @Query("select urls from searchentity where searchTerm = :searchTerm")
+    abstract fun getUrlsBySearchTermLiveData(searchTerm: String): LiveData<List<String>>
 
     @Query("delete from searchentity where searchTerm = :searchTerm")
     abstract fun deleteEntityBySearchTerm(searchTerm: String)
+
+    @Query("update searchentity set urls = :urls where searchTerm = :searchTerm")
+    abstract fun updateUrlsForSearchTerm(searchTerm: String, urls: List<String>)
 }

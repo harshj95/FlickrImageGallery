@@ -3,7 +3,7 @@ package com.application.flickr.data.api.model
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.application.flickr.config.AppExecutors
+import com.application.flickr.data.util.AppExecutors
 
 /**
  * Created by Harsh Jain on 18/04/19.

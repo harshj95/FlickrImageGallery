@@ -1,9 +1,9 @@
 package com.application.flickr.data.api.model
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.annotation.MainThread
-import com.application.flickr.config.AppExecutors
+import com.application.flickr.data.util.AppExecutors
 import java.util.*
 
 /**
