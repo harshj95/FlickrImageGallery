@@ -10,11 +10,13 @@ dependencies {
 
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.androidx.lifecycle
-    implementation deps.androidx.room_runtime
+    api deps.androidx.room_runtime
     kapt deps.androidx.room_compiler
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
     implementation deps.okhttp.core
     implementation deps.okhttp.okhttp_logging_interceptor
     implementation deps.timber
+    implementation deps.kodein.runtime
+    implementation deps.kodein.android
 }

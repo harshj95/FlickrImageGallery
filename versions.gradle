@@ -14,6 +14,7 @@ versions.junit = "4.12"
 versions.kodein = "6.1.0"
 versions.timber = "4.5.1"
 versions.glide = "4.8.0"
+versions.stetho = "1.5.0"
 
 def deps = [:]
 
@@ -50,6 +51,9 @@ kodein.runtime = "org.kodein.di:kodein-di-generic-jvm:$versions.kodein"
 kodein.android = "org.kodein.di:kodein-di-framework-android-core:$versions.kodein"
 deps.kodein = kodein
 
+def facebook = [:]
+facebook.stetho = "com.facebook.stetho:stetho:$versions.stetho"
+deps.facebook = facebook
 
 deps.file_tree =  fileTree(include: ['*.jar'], dir: 'libs')
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"

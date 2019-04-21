@@ -9,7 +9,9 @@ class AppInitializers {
 
     init {
         val timber: AppInitializer by kodeinInstance.instance("TimberInitializer")
+        val stetho: AppInitializer by kodeinInstance.instance("StethoInitializer")
         initializer.add(timber)
+        initializer.add(stetho)
     }
 
     fun init(application: Application) {

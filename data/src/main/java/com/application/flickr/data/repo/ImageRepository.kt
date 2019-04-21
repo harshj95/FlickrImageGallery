@@ -8,6 +8,7 @@ import com.application.flickr.data.api.model.Resource
 import com.application.flickr.data.db.cache.LruCache
 import com.application.flickr.data.db.dao.ImageDao
 import com.application.flickr.data.model.FlickrApiResponse
+import com.application.flickr.data.model.entity.UrlEntity
 import com.application.flickr.data.util.AppExecutors
 import com.application.flickr.data.util.C
 
@@ -22,11 +23,12 @@ class ImageRepository(
     private val lruCache: LruCache
 ) : Repository() {
 
-    fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<String>>> {
-        return object : NetworkCacheResource<List<String>, FlickrApiResponse>(appExecutors) {
-            override fun parseDataIfRequired(requestType: FlickrApiResponse): List<String> {
-                return requestType.data?.images!!.mapNotNull {
-                    it.url
+    fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<UrlEntity>>> {
+        lruCache.put(searchTerm)
+        return object : NetworkCacheResource<List<UrlEntity>, FlickrApiResponse>(appExecutors) {
+            override fun parseDataIfRequired(requestType: FlickrApiResponse): List<UrlEntity> {
+                return requestType.data?.images!!.map {
+                    UrlEntity(it.url!!, searchTerm)
                 }
             }
 
@@ -35,14 +37,14 @@ class ImageRepository(
                     val urls = images.mapNotNull {
                         it.url
                     }
-                    lruCache.put(searchTerm, urls)
+                    lruCache.putUrls(searchTerm, urls)
                 }
             }
 
-            override fun shouldFetch(data: List<String>?): Boolean = true
-//                rue for this call because we have pagination. Otherwise a limiter should be used (data or rate)
+            override fun shouldFetch(data: List<UrlEntity>?): Boolean = false
+//                true for this call because we have pagination. Otherwise a limiter should be used (data or rate)
 
-            override fun loadFromDb(): LiveData<List<String>> {
+            override fun loadFromDb(): LiveData<List<UrlEntity>> {
                 return imageDao.getUrlsBySearchTermLiveData(searchTerm)
             }
 

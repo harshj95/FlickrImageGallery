@@ -15,7 +15,7 @@ class AppExecutors private constructor(
 ) {
 
     constructor() : this(
-        Executors.newSingleThreadExecutor(),
+        Executors.newFixedThreadPool(3), //because of parallel caching and reading
         Executors.newFixedThreadPool(3),
         MainThreadExecutor()
     )

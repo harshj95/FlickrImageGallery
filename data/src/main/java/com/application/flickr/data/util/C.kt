@@ -15,4 +15,5 @@ object C {
     //To maintain the grid multiples of (LCM of 2,3,4 = 12) are taken
     const val IMAGES_PER_CALL = 24
     const val IMAGE_CACHE_SIZE = 96
+    const val SEARCH_TERM_CACHE_SIZE = 4
 }

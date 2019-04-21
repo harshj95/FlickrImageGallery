@@ -45,12 +45,18 @@ dependencies {
     implementation deps.androidx.material
     implementation deps.androidx.recyclerview
     implementation deps.androidx.constraint_layout
+    implementation deps.androidx.lifecycle
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.kodein.runtime
     implementation deps.kodein.android
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.okhttp.core
+    implementation deps.okhttp.okhttp_logging_interceptor
     implementation deps.glide
     kapt deps.glide_compiler
-    api (project(':data'))
+    implementation (project(':data'))
     implementation deps.timber
+    implementation deps.facebook.stetho
 }
 
