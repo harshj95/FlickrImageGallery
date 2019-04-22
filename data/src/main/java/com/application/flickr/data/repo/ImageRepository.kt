@@ -26,22 +26,31 @@ class ImageRepository(
     fun getImages(searchTerm: String, page: Int, isConnected: Boolean): LiveData<Resource<List<UrlEntity>>> {
         return object : NetworkCacheResource<List<UrlEntity>, FlickrApiResponse>(appExecutors) {
             override fun parseDataIfRequired(requestType: FlickrApiResponse): List<UrlEntity> {
-                return requestType.data?.images!!.map {
-                    UrlEntity(it.url!!, searchTerm)
+
+                requestType.data!!.images!!.let {
+                    val toReturn = ArrayList<UrlEntity>()
+
+                    for (i in 0 until it.size) {
+                        toReturn.add(UrlEntity(it[i].url!!, searchTerm))
+                    }
+
+                    return toReturn
                 }
             }
 
             override fun cacheCallResult(apiRequestResponse: FlickrApiResponse) {
                 apiRequestResponse.data!!.images!!.let { images ->
-                    val urls = images.mapNotNull {
-                        it.url
+                    val toReturn = ArrayList<String>()
+
+                    for (i in 0 until images.size) {
+                        toReturn.add(images[i].url!!)
                     }
-                    lruCache.put(searchTerm, urls)
+
+                    lruCache.put(searchTerm, toReturn)
                 }
             }
 
             override fun shouldFetch(data: List<UrlEntity>?): Boolean = isConnected
-//                true for this call because we have pagination. Otherwise a limiter should be used (data or rate)
 
             override fun loadFromDb(): LiveData<List<UrlEntity>> {
                 return imageDao.getUrlsBySearchTermLiveData(searchTerm)
