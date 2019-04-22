@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.flickr.R
 import com.application.flickr.data.api.model.Resource
 import com.application.flickr.data.api.model.Status
-import com.application.flickr.data.model.Connection
 import com.application.flickr.data.model.entity.UrlEntity
-import com.application.flickr.data.util.ConnectionLiveData
 import com.application.flickr.ui.common.BaseFragment
 import com.application.flickr.ui.main.adapter.ImageAdapter
 import com.application.flickr.util.extensions.hideKeyboard
@@ -35,7 +33,6 @@ class ImagesFragment : BaseFragment() {
     private val initialPage = 1
     private var currentPage = initialPage
     private val incrementCoefficient = 1
-    private var isConnected: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +44,7 @@ class ImagesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        etSearch.clearFocus()
         etSearch.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchTerm = etSearch.text.toString()

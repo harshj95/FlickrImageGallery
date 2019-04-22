@@ -41,6 +41,7 @@
                     android:layout_marginLeft="@dimen/spacing_regular"
                     android:background="@color/background"
                     android:gravity="center_vertical"
+                    android:focusedByDefault="false"
                     android:hint="Search photos..."
                     android:inputType="text|textCapSentences"
                     android:padding="@dimen/spacing_regular"
