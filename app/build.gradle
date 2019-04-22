@@ -46,6 +46,7 @@ dependencies {
     implementation deps.androidx.recyclerview
     implementation deps.androidx.constraint_layout
     implementation deps.androidx.lifecycle
+    implementation deps.androidx.core
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.kodein.runtime
     implementation deps.kodein.android
@@ -58,5 +59,8 @@ dependencies {
     implementation (project(':data'))
     implementation deps.timber
     implementation deps.facebook.stetho
+    implementation deps.firebase.firebase_messaging
 }
+
+apply plugin: 'com.google.gms.google-services'
 

@@ -4,6 +4,7 @@ versions.retrofit = "2.3.0"
 versions.okhttp = "3.6.0"
 versions.support = "27.1.0"
 versions.androidx = "1.0.0"
+versions.androidx_core = "1.0.1"
 versions.constraint_layout = "1.1.3"
 versions.navigation = "1.0.0-alpha02"
 versions.lifecycle = '2.0.0-beta01'
@@ -15,6 +16,9 @@ versions.kodein = "6.1.0"
 versions.timber = "4.5.1"
 versions.glide = "4.8.0"
 versions.stetho = "1.5.0"
+versions.google_services_plugin = "4.0.1"
+versions.firebase_core = "16.0.1"
+versions.firebase_messaging = "17.6.0"
 
 def deps = [:]
 
@@ -26,6 +30,7 @@ androidx.constraint_layout = "androidx.constraintlayout:constraintlayout:${versi
 androidx.lifecycle = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
 androidx.room_runtime = "androidx.room:room-runtime:$versions.room"
 androidx.room_compiler = "androidx.room:room-compiler:$versions.room"
+androidx.core = "androidx.core:core:$versions.androidx_core"
 deps.androidx = androidx
 
 def kotlin = [:]
@@ -55,17 +60,23 @@ def facebook = [:]
 facebook.stetho = "com.facebook.stetho:stetho:$versions.stetho"
 deps.facebook = facebook
 
+def firebase = [:]
+firebase.firebase_core = "com.google.firebase:firebase-core:$versions.firebase_core"
+firebase.firebase_messaging = "com.google.firebase:firebase-messaging:$versions.firebase_messaging"
+deps.firebase = firebase
+
 deps.file_tree =  fileTree(include: ['*.jar'], dir: 'libs')
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.junit = "junit:junit:$versions.junit"
 deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.glide_compiler = "com.github.bumptech.glide:compiler:$versions.glide"
+deps.google_services_plugin = "com.google.gms:google-services:$versions.google_services_plugin"
 
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.min_sdk = 23
+build_versions.min_sdk = 24
 build_versions.compile_sdk = 28
 build_versions.target_sdk = 28
 build_versions.build_tools = "28.0.3"

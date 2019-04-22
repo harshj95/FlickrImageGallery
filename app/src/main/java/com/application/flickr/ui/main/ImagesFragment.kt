@@ -36,6 +36,7 @@ class ImagesFragment : BaseFragment() {
     private val incrementCoefficient = 1
     private var currentColumns = 2
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +47,12 @@ class ImagesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.getString("SEARCH_TERM")?.let {
+            searchTerm = it
+            etSearch.setText(it)
+        }
+
         etSearch.clearFocus()
         etSearch.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -106,5 +113,15 @@ class ImagesFragment : BaseFragment() {
 
     private fun handleSuccess(images: List<UrlEntity>) {
         imageAdapter.append(images)
+    }
+
+    companion object {
+        internal fun newInstance(searchTerm: String?): ImagesFragment {
+            val bundle = Bundle()
+            bundle.putString("SEARCH_TERM", searchTerm)
+            val imagesFragment = ImagesFragment()
+            imagesFragment.arguments = bundle
+            return imagesFragment
+        }
     }
 }

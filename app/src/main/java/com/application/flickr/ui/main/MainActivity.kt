@@ -1,5 +1,7 @@
 package com.application.flickr.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,11 +24,11 @@ class MainActivity : BaseActivity() {
 
         val fragment = supportFragmentManager.findFragmentByTag("IMAGE_FRAGMENT")
 
-        val fragmentOne: ImagesFragment
+        val imagesFragment: ImagesFragment
 
         if (fragment == null) {
-            fragmentOne = ImagesFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, fragmentOne, "IMAGE_FRAGMENT")
+            imagesFragment = ImagesFragment.newInstance(intent.getStringExtra("SEARCH_TERM"))
+            supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, imagesFragment, "IMAGE_FRAGMENT")
                 .commit()
         }
 
@@ -37,5 +39,13 @@ class MainActivity : BaseActivity() {
         ConnectionLiveData(this).observe(this, Observer {
             mainViewModel.isConnected = it?.isConnected == true
         })
+    }
+
+    companion object {
+        fun notificationIntent(context: Context, searchTerm: String): Intent {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra("SEARCH_TERM", searchTerm)
+            return intent
+        }
     }
 }
