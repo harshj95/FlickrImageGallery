@@ -19,10 +19,12 @@ class ImageViewHolder(itemView: View) : BaseViewHolder<UrlEntity>(itemView) {
         }
     }
 
-    override fun bindTo(t: UrlEntity) {
-        itemView.apply {
-            iv_image.loadImage {
-                load(t.url)
+    override fun bindTo(t: UrlEntity?) {
+        t?.let {
+            itemView.apply {
+                iv_image.loadImage {
+                    load(t.url)
+                }
             }
         }
     }

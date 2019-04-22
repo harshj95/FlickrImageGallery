@@ -24,7 +24,9 @@ class ImageRepository(
 ) : Repository() {
 
     fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<UrlEntity>>> {
-        lruCache.put(searchTerm)
+        appExecutors.diskIO().execute {
+            lruCache.put(searchTerm)
+        }
         return object : NetworkCacheResource<List<UrlEntity>, FlickrApiResponse>(appExecutors) {
             override fun parseDataIfRequired(requestType: FlickrApiResponse): List<UrlEntity> {
                 return requestType.data?.images!!.map {
@@ -41,7 +43,7 @@ class ImageRepository(
                 }
             }
 
-            override fun shouldFetch(data: List<UrlEntity>?): Boolean = false
+            override fun shouldFetch(data: List<UrlEntity>?): Boolean = true
 //                true for this call because we have pagination. Otherwise a limiter should be used (data or rate)
 
             override fun loadFromDb(): LiveData<List<UrlEntity>> {

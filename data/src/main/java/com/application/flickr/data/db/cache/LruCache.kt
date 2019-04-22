@@ -24,7 +24,7 @@ class LruCache private constructor(
 
     fun put(searchTerm: String) {
         if (map.containsKey(searchTerm)) {
-            val t = map[searchTerm]
+            val t = map.get(searchTerm)
             t!!.value = true
 
             remove(t)
@@ -38,7 +38,7 @@ class LruCache private constructor(
 
             val t = ImageNode(searchTerm, true)
             setHead(t)
-            map[searchTerm] = t
+            map.put(searchTerm, t)
             processCacheRequest(DatabaseAction.AddToCache(searchTerm))
         }
     }

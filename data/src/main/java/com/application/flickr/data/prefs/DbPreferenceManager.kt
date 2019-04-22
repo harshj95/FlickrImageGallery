@@ -16,6 +16,13 @@ class DbPreferenceManager private constructor(context: Application) : SharedPref
         pref = context.getSharedPreferences(dbPreferenceName, Context.MODE_PRIVATE)
     }
 
+
+    var isFirstRun: Boolean
+        get() = getBoolean(KEY_FIRST_RUN, true)
+        set(value) {
+            putBoolean(KEY_FIRST_RUN, value)
+        }
+
     companion object : SingletonHolder<DbPreferenceManager, Application>(::DbPreferenceManager) {
         const val KEY_FIRST_RUN = "first_run"
         const val CACHE_MAP = "cache_map"

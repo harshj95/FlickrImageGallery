@@ -33,12 +33,16 @@ val dbModule = Kodein.Module("dbModule") {
         ImageDatabase.getInstance(instance())
     }
 
+    bind<LruCache>() with singleton {
+        LruCache.getInstance(instance(), C.SEARCH_TERM_CACHE_SIZE, instance(), instance())
+    }
+
     bind<ImageRepository>() with singleton {
         ImageRepository(
             instance(),
             instance(),
             instance(),
-            LruCache.getInstance(instance(), C.SEARCH_TERM_CACHE_SIZE, instance(), instance())
+            instance()
         )
     }
 

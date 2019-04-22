@@ -25,7 +25,7 @@ class MainViewModel : BaseViewModel() {
     private val imagesResponse = WiseLiveData.create<Resource<List<UrlEntity>>>()
     private val imagesMutableLiveData = MutableLiveData<Int>()
 
-    private var searchTerm: String = "dogs"
+    var searchTerm: String = "dogs"
 
     init {
         images = Transformations.switchMap(imagesMutableLiveData) {
