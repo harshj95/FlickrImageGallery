@@ -27,7 +27,7 @@
                     android:layout_height="20dp"
                     android:layout_marginStart="@dimen/spacing_regular"
                     android:layout_marginLeft="@dimen/spacing_regular"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_baseline_search_24px"
                     android:tint="@color/text_body_2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +52,18 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/ivIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                    android:id="@+id/columnPickerIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="@dimen/spacing_regular"
+                    android:layout_marginLeft="@dimen/spacing_regular"
+                    android:src="@drawable/ic_baseline_more_vert_24px"
+                    android:tint="@color/text_body_2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

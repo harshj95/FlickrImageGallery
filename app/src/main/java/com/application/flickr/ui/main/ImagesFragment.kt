@@ -15,6 +15,7 @@ import com.application.flickr.data.api.model.Resource
 import com.application.flickr.data.api.model.Status
 import com.application.flickr.data.model.entity.UrlEntity
 import com.application.flickr.ui.common.BaseFragment
+import com.application.flickr.ui.main.adapter.GridPickerDialog
 import com.application.flickr.ui.main.adapter.ImageAdapter
 import com.application.flickr.util.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_photos.*
@@ -33,6 +34,7 @@ class ImagesFragment : BaseFragment() {
     private val initialPage = 1
     private var currentPage = initialPage
     private val incrementCoefficient = 1
+    private var currentColumns = 2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +58,15 @@ class ImagesFragment : BaseFragment() {
             }
             false
         })
+
+        mainViewModel.columns.observe(this, Observer {
+            this.currentColumns = it
+            imageRecyclerView.changeGrid(it)
+        })
+
+        columnPickerIcon.setOnClickListener {
+            GridPickerDialog.newInstance(currentColumns).show(activity!!.supportFragmentManager, "COL_PICKER")
+        }
 
         imageRecyclerView.apply {
             adapter = imageAdapter

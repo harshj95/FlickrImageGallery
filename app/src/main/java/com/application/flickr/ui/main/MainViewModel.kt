@@ -25,6 +25,8 @@ class MainViewModel : BaseViewModel() {
     private val imagesResponse = WiseLiveData.create<Resource<List<UrlEntity>>>()
     private val imagesMutableLiveData = MutableLiveData<SearchParameters>()
 
+    var columns = MutableLiveData<Int>()
+
     var isConnected: Boolean = false
 
     init {
