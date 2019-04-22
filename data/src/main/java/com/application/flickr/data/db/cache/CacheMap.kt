@@ -28,7 +28,8 @@ class CacheMap(private val dbPreferenceManager: DbPreferenceManager) {
     fun put(key: String, value: ImageNode): ImageNode? {
         val map = dbPreferenceManager.getString(CACHE_MAP, "").convertToHashMap()
         val toReturn = map.put(key, value)
-        dbPreferenceManager.putString(CACHE_MAP, map.convertToString())
+        val check = map.convertToString()
+        dbPreferenceManager.putString(CACHE_MAP, check)
         return toReturn
     }
 

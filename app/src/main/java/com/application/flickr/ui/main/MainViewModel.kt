@@ -23,14 +23,14 @@ class MainViewModel : BaseViewModel() {
 
     private var images: LiveData<Resource<List<UrlEntity>>>
     private val imagesResponse = WiseLiveData.create<Resource<List<UrlEntity>>>()
-    private val imagesMutableLiveData = MutableLiveData<Int>()
+    private val imagesMutableLiveData = MutableLiveData<SearchParameters>()
 
-    var searchTerm: String = "dogs"
+    var isConnected: Boolean = false
 
     init {
         images = Transformations.switchMap(imagesMutableLiveData) {
             if (it != null) {
-                imageRepository.getImages(searchTerm, it)
+                imageRepository.getImages(it.searchTerm, it.page, isConnected)
             } else {
                 AbsentLiveData.create<Resource<List<UrlEntity>>>()
             }
@@ -38,11 +38,15 @@ class MainViewModel : BaseViewModel() {
         initTodoResponse()
     }
 
-    internal fun getImagesForSearchTerm(searchTerm: String, page: Int): LiveData<Resource<List<UrlEntity>>> {
-        this.searchTerm = searchTerm
-        imagesMutableLiveData.value = page
+    internal fun getImagesForSearchTerm(
+        searchTerm: String,
+        page: Int
+    ): LiveData<Resource<List<UrlEntity>>> {
+        imagesMutableLiveData.value = SearchParameters(searchTerm, page)
         return imagesResponse
     }
+
+    private inner class SearchParameters(val searchTerm: String, val page: Int)
 
     private fun initTodoResponse() {
         imagesResponse.addSource(images) { resource ->

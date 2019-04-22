@@ -23,10 +23,7 @@ class ImageRepository(
     private val lruCache: LruCache
 ) : Repository() {
 
-    fun getImages(searchTerm: String, page: Int): LiveData<Resource<List<UrlEntity>>> {
-        appExecutors.diskIO().execute {
-            lruCache.put(searchTerm)
-        }
+    fun getImages(searchTerm: String, page: Int, isConnected: Boolean): LiveData<Resource<List<UrlEntity>>> {
         return object : NetworkCacheResource<List<UrlEntity>, FlickrApiResponse>(appExecutors) {
             override fun parseDataIfRequired(requestType: FlickrApiResponse): List<UrlEntity> {
                 return requestType.data?.images!!.map {
@@ -39,11 +36,11 @@ class ImageRepository(
                     val urls = images.mapNotNull {
                         it.url
                     }
-                    lruCache.putUrls(searchTerm, urls)
+                    lruCache.put(searchTerm, urls)
                 }
             }
 
-            override fun shouldFetch(data: List<UrlEntity>?): Boolean = true
+            override fun shouldFetch(data: List<UrlEntity>?): Boolean = isConnected
 //                true for this call because we have pagination. Otherwise a limiter should be used (data or rate)
 
             override fun loadFromDb(): LiveData<List<UrlEntity>> {

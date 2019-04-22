@@ -19,7 +19,7 @@ inline fun ImageView.loadImage(
 
     val requestOptions = requestManager.func().apply(
         RequestOptions()
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE).override(18, 18).centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE).centerCrop()
     )
 
     requestOptions.into(this)

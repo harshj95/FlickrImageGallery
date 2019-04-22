@@ -22,7 +22,7 @@ class LruCache private constructor(
     private var head: ImageNode? = null
     private var tail: ImageNode? = null
 
-    fun put(searchTerm: String) {
+    fun put(searchTerm: String, urls: List<String>) {
         if (map.containsKey(searchTerm)) {
             val t = map.get(searchTerm)
             t!!.value = true
@@ -39,15 +39,7 @@ class LruCache private constructor(
             val t = ImageNode(searchTerm, true)
             setHead(t)
             map.put(searchTerm, t)
-            processCacheRequest(DatabaseAction.AddToCache(searchTerm))
-        }
-    }
-
-    fun putUrls(searchTerm: String, urls: List<String>) {
-        appExecutors.diskIO().execute {
-            urls.forEach {
-                imageDao.insertUrlEntity(UrlEntity(it, searchTerm))
-            }
+            processCacheRequest(DatabaseAction.AddToCache(searchTerm, urls))
         }
     }
 
@@ -56,6 +48,9 @@ class LruCache private constructor(
             is DatabaseAction.AddToCache -> {
                 appExecutors.diskIO().execute {
                     imageDao.insertSearchEntity(SearchEntity(action.searchTerm))
+                    action.urls.forEach {
+                        imageDao.insertUrlEntity(UrlEntity(it, action.searchTerm))
+                    }
                 }
             }
 
@@ -97,7 +92,7 @@ class LruCache private constructor(
     }
 
     private sealed class DatabaseAction {
-        class AddToCache(val searchTerm: String) : DatabaseAction()
+        class AddToCache(val searchTerm: String, val urls: List<String>) : DatabaseAction()
         class DeleteFromCache(val searchTerm: String) : DatabaseAction()
     }
 
