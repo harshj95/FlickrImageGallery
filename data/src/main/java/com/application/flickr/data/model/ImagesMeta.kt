@@ -10,17 +10,17 @@ import com.google.gson.annotations.SerializedName
 data class ImagesMeta(
     @SerializedName("page")
     @Expose
-    var page: Int = 0,
+    val page: Int = 0,
     @SerializedName("pages")
     @Expose
-    var pages: Int = 0,
+    val pages: Int = 0,
     @SerializedName("perpage")
     @Expose
-    var perPage: Int = 0,
+    val perPage: Int = 0,
     @SerializedName("total")
     @Expose
-    var total: String? = null,
+    val total: String? = null,
     @SerializedName("photo")
     @Expose
-    var images: List<Image>? = null
+    val images: List<Image>? = null
 )

@@ -6,7 +6,6 @@ import com.application.flickr.data.model.entity.UrlEntity
 import com.application.flickr.data.prefs.DbPreferenceManager
 import com.application.flickr.data.util.AppExecutors
 
-
 /**
  * Created by Harsh Jain on 20/04/19.
  */
@@ -15,31 +14,38 @@ class LruCache private constructor(
     private val imageDao: ImageDao,
     private val cap: Int,
     private val appExecutors: AppExecutors,
-    dbPreferenceManager: DbPreferenceManager
+    private val dbPreferenceManager: DbPreferenceManager
 ) {
 
-    private var map: CacheMap = CacheMap(dbPreferenceManager)
-    private var head: ImageNode? = null
-    private var tail: ImageNode? = null
-
     fun put(searchTerm: String, urls: List<String>) {
-        if (map.containsKey(searchTerm)) {
-            val t = map.get(searchTerm)
-            t!!.value = true
+        appExecutors.diskIO().execute {
+            val list = imageDao.getOrderedSearchEntities()
 
-            remove(t)
-            setHead(t)
-        } else {
-            if (map.size >= cap) {
-                map.remove(tail!!.key)
-                remove(tail!!)
-                processCacheRequest(DatabaseAction.DeleteFromCache(searchTerm))
+            if (list.isNullOrEmpty()) {
+                processCacheRequest(DatabaseAction.AddToCache(searchTerm, urls))
+            } else {
+                if (dbPreferenceManager.currentCacheSize == cap) {
+                    processCacheRequest(DatabaseAction.DeleteFromCache(list[0].searchTerm))
+                    processCacheRequest(DatabaseAction.AddToCache(searchTerm, urls))
+                } else {
+                    var found: SearchEntity? = null
+
+                    list.forEach {
+                        if (it.searchTerm == searchTerm) {
+                            it.timestamp = System.nanoTime()
+                            found = it
+                        }
+                    }
+
+                    if (found != null) {
+                        processCacheRequest(DatabaseAction.UpdateCache(found!!, urls))
+                    } else {
+                        val currentCacheSize = dbPreferenceManager.currentCacheSize
+                        dbPreferenceManager.currentCacheSize = currentCacheSize + 1
+                        processCacheRequest(DatabaseAction.AddToCache(searchTerm, urls))
+                    }
+                }
             }
-
-            val t = ImageNode(searchTerm, true)
-            setHead(t)
-            map.put(searchTerm, t)
-            processCacheRequest(DatabaseAction.AddToCache(searchTerm, urls))
         }
     }
 
@@ -47,9 +53,18 @@ class LruCache private constructor(
         when (action) {
             is DatabaseAction.AddToCache -> {
                 appExecutors.diskIO().execute {
-                    imageDao.insertSearchEntity(SearchEntity(action.searchTerm))
+                    imageDao.insertSearchEntity(SearchEntity(action.searchTerm, System.nanoTime()))
                     action.urls.forEach {
                         imageDao.insertUrlEntity(UrlEntity(it, action.searchTerm))
+                    }
+                }
+            }
+
+            is DatabaseAction.UpdateCache -> {
+                appExecutors.diskIO().execute {
+                    imageDao.updateSearchEntity(action.searchEntity)
+                    action.urls.forEach {
+                        imageDao.insertUrlEntity(UrlEntity(it, action.searchEntity.searchTerm))
                     }
                 }
             }
@@ -63,36 +78,9 @@ class LruCache private constructor(
         }
     }
 
-    private fun remove(t: ImageNode) {
-        if (t.prev != null) {
-            t.prev!!.next = t.next
-        } else {
-            head = t.next
-        }
-
-        if (t.next != null) {
-            t.next!!.prev = t.prev
-        } else {
-            tail = t.prev
-        }
-    }
-
-    private fun setHead(t: ImageNode) {
-        if (head != null) {
-            head!!.prev = t
-        }
-
-        t.next = head
-        t.prev = null
-        head = t
-
-        if (tail == null) {
-            tail = head
-        }
-    }
-
     private sealed class DatabaseAction {
         class AddToCache(val searchTerm: String, val urls: List<String>) : DatabaseAction()
+        class UpdateCache(val searchEntity: SearchEntity, val urls: List<String>) : DatabaseAction()
         class DeleteFromCache(val searchTerm: String) : DatabaseAction()
     }
 

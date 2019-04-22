@@ -1,10 +1,7 @@
 package com.application.flickr.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.application.flickr.data.model.entity.SearchEntity
 import com.application.flickr.data.model.entity.UrlEntity
 
@@ -19,6 +16,12 @@ abstract class ImageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertUrlEntity(urlEntity: UrlEntity)
+
+    @Update
+    abstract fun updateSearchEntity(searchEntity: SearchEntity)
+
+    @Query("select * from searchentity order by timestamp")
+    abstract fun getOrderedSearchEntities(): List<SearchEntity>
 
     @Query("select * from searchentity where searchTerm = :searchTerm")
     abstract fun getSearchEntityBySearchTerm(searchTerm: String): SearchEntity

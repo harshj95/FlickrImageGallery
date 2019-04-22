@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName
 data class FlickrApiResponse(
     @SerializedName("photos")
     @Expose
-    var data: ImagesMeta? = null,
+    val data: ImagesMeta? = null,
     @SerializedName("stat")
     @Expose
-    var status: String? = null
+    val status: String? = null
 )

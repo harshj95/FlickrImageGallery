@@ -9,7 +9,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class SearchEntity(
-    var searchTerm: String
+    var searchTerm: String,
+    var timestamp: Long
 ) {
     init {
         searchTerm = searchTerm.toLowerCase() //Assuming search terms are saved as lowercase only

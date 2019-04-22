@@ -1,6 +1,5 @@
 package com.application.flickr.data.util.extensions
 
-import com.application.flickr.data.db.cache.ImageNode
 import com.application.flickr.data.util.C.IMAGE_CACHE_SIZE
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -24,16 +23,6 @@ fun <T> List<T>.convertToCacheList(incomingList: List<T>): List<T> {
     }
 
     return toReturn
-}
-
-fun HashMap<String, ImageNode>.convertToString(): String {
-    return Gson().toJson(this)
-}
-
-fun String.convertToHashMap(): HashMap<String, ImageNode> {
-    val listType = object : TypeToken<HashMap<String, ImageNode>>() {
-    }.type
-    return Gson().fromJson(this, listType)
 }
 
 fun String.stringToStringList(): List<String>? {
